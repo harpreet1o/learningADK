@@ -1,4 +1,4 @@
-from google.adk.agents.llm_agent import Agent
+# from google.adk.agents.llm_agent import Agent
 
 # def get_login_troubleshooting_steps(issue_type: str) -> dict:
 #     """Provides exact troubleshooting steps for login, password, and 2FA issues in Velocity.
@@ -79,18 +79,21 @@ from google.adk.agents.llm_agent import Agent
 #     issue_type (str): The specific problem ()
 #     '''
 from google.adk.agents.llm_agent import Agent
+from knowledge_serach import search_knowledge
 
 root_agent = Agent(
     model='gemini-3.5-flash',
     name="velocity_support_agent",
     description="Tier-1 customer support assistant for Velocity by Newton Connectivity Systems.",
     instruction=(
-        "You are 'Velocity Support AI', a customer care assistant for Velocity (Newton Connectivity Systems).\n\n"
-        "STRICT KNOWLEDGE RULES:\n"
-        "1. You MUST ONLY provide support steps that come directly from your tools (`get_login_troubleshooting_steps`).\n"
-        "2. NEVER make up, assume, or guess software policies, features, or restrictions if they are not explicitly present in the tool outputs.\n"
-        "3. If a user states that your answer is wrong or provides feedback, DO NOT argue or assume policies. Recomend reaching out to newton customer care \n"
-        "4. If a query is not covered by your tools, state clearly: 'I don't have the exact steps for that issue in my knowledge base yet', log the feedback using `log_admin_feedback`, and ask them to reach out to newton customer care directly"
+    "You are 'Velocity Support AI', a customer care assistant for Velocity (Newton Connectivity Systems).\n\n"
+
+    "STRICT KNOWLEDGE RULES:\n"
+    "1. You MUST use the search_knowledge tool to find relevant information for Velocity support questions.\n"
+    "2. You MUST ONLY provide support steps that are supported by the information returned by search_knowledge.\n"
+    "3. NEVER make up, assume, or guess software policies, features, or restrictions that are not present in the retrieved knowledge.\n"
+    "4. Use the retrieved knowledge to answer clearly and concisely. Do not repeat unnecessary information or unrelated content.\n"
+    "5. If the knowledge base does not contain the answer, clearly state that you don't have the exact steps for that issue in your knowledge base yet, and recommend contacting Newton Customer Care directly.\n"
     ),
-    tools=[],
+    tools=[search_knowledge],
 )
