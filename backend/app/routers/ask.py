@@ -52,11 +52,25 @@ async def ask(question: Question):
         "answer": answer
     }
 
-
+#this is for the test
 @router.get("/test")
 def test():
     logger.debug("~~~ HELLO FROM THE ROUTE ~~~")
     return "hello from the router"
+
+#this is for the start when the converstion is started 
+@router.post("/session")
+async def create_session():
+
+    session = await session_service.create_session(
+        app_name="velocity_support_agent",
+        user_id="user",
+    )
+
+    return {
+        "session_id": session.id
+    }
+
 
 # from fastapi import APIRouter, HTTPException
 # from pydantic import BaseModel
