@@ -22,15 +22,17 @@ runner = Runner(
 
 class Question(BaseModel):
     question: str
+    session_id: str
 
 
 @router.post("/ask")
 async def ask(question: Question):
     logger.debug("question recevied", question.question)
-    session = await session_service.create_session(
-        app_name="velocity_support_agent",
-        user_id="user",
-    )
+    logger.debug("question", question)
+    # session = await session_service.create_session(
+    #     app_name="velocity_support_agent",
+    #     user_id="user",
+    # )
 
     message = types.Content(
         role="user",
@@ -40,8 +42,8 @@ async def ask(question: Question):
     answer = None
 
     async for event in runner.run_async(
-        user_id=session.user_id,
-        session_id=session.id,
+        user_id="user",
+        session_id=question.session_id,
         new_message=message,
     ):
         if event.is_final_response():
@@ -70,7 +72,19 @@ async def create_session():
     return {
         "session_id": session.id
     }
+#To delete the conversation
+@router.delete("/session/{session_id}")
+async def disconnect_session(session_id: str):
 
+    await session_service.delete_session(
+        app_name="velocity_support_agent",
+        user_id="user",
+        session_id=session_id,
+    )
+
+    return {
+        "message": "Session disconnected"
+    }
 
 # from fastapi import APIRouter, HTTPException
 # from pydantic import BaseModel
