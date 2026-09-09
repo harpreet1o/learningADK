@@ -33,3 +33,6 @@ Thumbs.db
 # Local session database
 session.db
 *.db
+
+__pycache__/
+*.py[cod]
