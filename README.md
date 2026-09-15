@@ -17,50 +17,6 @@ The current version focuses on establishing the core architecture:
 * Conversation session management
 * Basic frontend chat interface
 
-The session architecture is currently being validated before expanding the application further.
-
----
-
-## 🏗️ Architecture
-
-```text
-                    ┌──────────────────┐
-                    │    Frontend      │
-                    │   Chat Client    │
-                    └────────┬─────────┘
-                             │
-                             │ HTTP
-                             ▼
-                    ┌──────────────────┐
-                    │    FastAPI       │
-                    │     Backend      │
-                    └────────┬─────────┘
-                             │
-              ┌──────────────┴──────────────┐
-              │                             │
-              ▼                             ▼
-      ┌─────────────────┐          ┌─────────────────┐
-      │ Session Service │          │ Knowledge Search│
-      │                 │          │                 │
-      │ ADK Sessions    │          │ ChromaDB        │
-      └────────┬────────┘          │ Gemini Embedding│
-               │                   └────────┬────────┘
-               │                            │
-               ▼                            ▼
-        ┌────────────────────────────────────────┐
-        │              ADK Runner                │
-        │                                        │
-        │          Support AI Agent              │
-        └────────────────────┬───────────────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │   Gemini Model   │
-                    └──────────────────┘
-```
-
----
-
 ## ✨ Key Features
 
 ### AI Support Agent
